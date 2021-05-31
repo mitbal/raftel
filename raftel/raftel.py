@@ -11,11 +11,10 @@ def _rad_to_degree(x):
     return x * 180 / math.pi
 
 
-def plot_s2id(s2ids):
+def plot_s2id(s2ids, color='#00ff0088'):
     """
     Given list of s2id, plot the area in the map
     """
-    color = '#00ff0088'
 
     m = StaticMap(800, 600, 5, 5, url_template='http://a.tile.stamen.com/toner/{z}/{x}/{y}.png')
 
