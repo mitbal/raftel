@@ -11,6 +11,17 @@ def _rad_to_degree(x):
     return x * 180 / math.pi
 
 
+def get_s2id(lat, lon, level):
+    """
+    Given coordinates and the level, return the s2id that contains the coordinate
+    """
+
+    pos = s2sphere.LatLng.from_degrees(lat, lon)
+    s2cell = s2sphere.CellId.from_lat_lng(pos).parent(level)
+
+    return s2cell.id()
+
+
 def plot_s2id(s2ids, color='#00ff0088', auto_render=True, m=None):
     """
     Given list of s2id, plot the area in the map
