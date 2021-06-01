@@ -11,7 +11,7 @@ def _rad_to_degree(x):
     return x * 180 / math.pi
 
 
-def plot_s2id(s2ids, color='#00ff0088'):
+def plot_s2id(s2ids, color='#00ff0088', auto_render=True):
     """
     Given list of s2id, plot the area in the map
     """
@@ -30,4 +30,6 @@ def plot_s2id(s2ids, color='#00ff0088'):
         region = Polygon(points, color, 'black', 20)
         m.add_polygon(region)
 
+    if auto_render:
+        return m.render()
     return m
