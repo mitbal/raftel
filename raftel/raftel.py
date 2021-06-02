@@ -22,6 +22,29 @@ def get_s2id(lat, lon, level):
     return s2cell.id()
 
 
+def get_region(lat, lon, radius, level):
+    """
+    Get a list of s2ids within the radius from specific lat and long at specified level
+    Thanks to Gaurav's answer posted here: https://stackoverflow.com/questions/44649831/using-python-s2-s2sphere-library-find-all-s2-cells-of-a-particular-level-with
+    """
+
+    earthCircumferenceMeters = 1000 * 40075.017
+    radius_radians = (2 * math.pi) * (float(radius) / earthCircumferenceMeters)
+    
+    latlng = s2sphere.LatLng.from_degrees(float(lat), float(lon)).normalized().to_point()
+
+    region = s2sphere.Cap.from_axis_height(latlng, (radius_radians*radius_radians)/2)
+    coverer = s2sphere.RegionCoverer()
+    coverer.min_level = int(level)
+    coverer.max_level = int(level)
+    coverer.max_cells = 2**30
+    covering = coverer.get_covering(region)
+ 
+    s2ids = [cell.id() for cell in covering]
+
+    return s2ids
+
+
 def plot_s2id(s2ids, color='#00ff0088', auto_render=True, m=None):
     """
     Given list of s2id, plot the area in the map
