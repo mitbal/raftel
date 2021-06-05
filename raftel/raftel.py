@@ -45,14 +45,18 @@ def get_region(lat, lon, radius, level):
     return s2ids
 
 
-def plot_s2id(s2ids, color='#00ff0088', auto_render=True, m=None):
+def plot_s2id(s2ids, color='#00ff00', auto_render=True, m=None, alpha=0.5):
     """
     Given list of s2id, plot the area in the map
     """
     if m is None:
         m = StaticMap(800, 600, 5, 5, url_template='http://a.tile.stamen.com/toner/{z}/{x}/{y}.png')
 
-    for s2 in s2ids:
+    if (type(color) is not str):
+        if (len(color) != len(s2ids)):
+            raise Exception('Please use string or list of string with the same length as the s2id in hexadecimal format')
+
+    for i, s2 in enumerate(s2ids):
 
         s2cell = s2sphere.CellId(int(s2))
         s = s2sphere.Cell(s2cell)
@@ -61,7 +65,12 @@ def plot_s2id(s2ids, color='#00ff0088', auto_render=True, m=None):
         lon1, lat1 = _rad_to_degree(s.get_latitude(1, 1)), _rad_to_degree(s.get_longitude(1, 1))
         points = [[lat0, lon0], [lat0, lon1], [lat1, lon1], [lat1, lon0]]
 
-        region = Polygon(points, color, 'black', 20)
+        if type(color) is str:
+            full_color = f'{color}{math.ceil(alpha*255):02x}'
+        else:
+            full_color = f'{color[i]}{math.ceil(alpha*255):02x}'
+
+        region = Polygon(points, full_color, 'black', 20)
         m.add_polygon(region)
 
     if auto_render:
