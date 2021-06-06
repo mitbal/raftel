@@ -1,8 +1,15 @@
 # package raftel contains the function to plot list of s2id easily
 
 import math
+
 import s2sphere
+import numpy as np
+import seaborn as sns
 from staticmap import StaticMap, Polygon
+
+
+palettes = ['Reds', 'Greens', 'Blues', 'Oranges', 'Purples']
+
 
 def _rad_to_degree(x):
     """
@@ -76,3 +83,40 @@ def plot_s2id(s2ids, color='#00ff00', auto_render=True, m=None, alpha=0.5):
     if auto_render:
         return m.render()
     return m
+
+
+def area_plot(data=None, s2id_col='s2id', hue='', color='', alpha=1):
+    """
+    Plot s2id inside a dataframe with seaborn like interface
+    """
+
+    if hue == '':
+        return plot_s2id(data[s2id_col], alpha=alpha)
+
+    cats = data[hue].unique()
+
+    m = None
+    for i, cat in enumerate(cats):
+        
+        temp = data[data[hue] == cat]
+
+        sns.color_palette(palettes[i])
+
+        if color == '':
+            r, g, b = (np.array(sns.color_palette(palettes[i])[-1])*255).astype(int)
+            c = f'#{r:02x}{g:02x}{b:02x}'
+            m = plot_s2id(temp[s2id_col], color=c, m=m, auto_render=False, alpha=alpha)
+        else:
+
+            vals = temp[color]
+            min_val = min(vals)
+            max_val = max(vals)
+
+            n_unique = (len(vals.unique())-1)
+            idx = ((np.array(vals) - min_val) / (max_val - min_val) * n_unique).astype(int)
+            colors = [f'#{x[0]:02x}{x[1]:02x}{x[2]:02x}' for x in 
+                [(np.array(sns.color_palette(palettes[i], n_unique+1)[j])*255).astype(int) for j in idx]
+            ]
+            m = plot_s2id(temp[s2id_col], color=colors, m=m, auto_render=False, alpha=alpha)
+
+    return m.render()
