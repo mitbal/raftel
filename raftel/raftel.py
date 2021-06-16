@@ -52,9 +52,17 @@ def get_region(lat, lon, radius, level):
     return s2ids
 
 
-def plot_s2id(s2ids, color='#00ff00', auto_render=True, m=None, alpha=0.5):
+def plot_s2id(s2ids, color='#00ff00', alpha=0.5, auto_render=True, m=None):
     """
-    Given list of s2id, plot the area in the map
+    Given list of s2id, plot the area in the map.
+
+    :param s2ids: iterable that contains either int or string of s2id to be plot
+    :param color: the color of s2id block in the map
+    :param auto_render: option to either return a staticmap object with false, or the image object
+    :param m: a staticmap object if you want to add more plot to previously object
+    :param alpha: set the transparency of the color
+
+    :returns: either image or staticmap object
     """
     if m is None:
         m = StaticMap(800, 600, 5, 5, url_template='http://a.tile.stamen.com/toner/{z}/{x}/{y}.png')
