@@ -5,6 +5,7 @@ import math
 import s2sphere
 import numpy as np
 import seaborn as sns
+import matplotlib.pyplot as plt
 from staticmap import StaticMap, Polygon
 
 
@@ -93,17 +94,29 @@ def plot_s2id(s2ids, color='#00ff00', alpha=0.5, auto_render=True, m=None):
     return m
 
 
-def area_plot(data=None, s2id_col='s2id', hue='', color='', alpha=1):
+def area_plot(data=None, s2id_col='s2id', hue='', color='', alpha=1, col=''):
     """
     Plot s2id inside a dataframe with seaborn like interface
     """
 
+    if col != '':
+
+        cols = data[col].unique()
+        fig, axes = plt.subplots(1, len(cols), figsize=(12*len(cols), 12))
+        
+        for c, ax in zip(cols, axes.reshape(-1)):
+
+            print('plot ', c)
+            img = area_plot(data[data[col] == c], s2id_col, hue, color, alpha, col='')
+            ax.imshow(img)
+        
+        return fig
+
     if hue == '':
         return plot_s2id(data[s2id_col], alpha=alpha)
 
-    cats = data[hue].unique()
-
     m = None
+    cats = data[hue].unique()
     for i, cat in enumerate(cats):
         
         temp = data[data[hue] == cat]
