@@ -6,8 +6,7 @@ import s2sphere
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from staticmap import StaticMap, Polygon
-
+from monochromap import MonochroMap, Polygon
 
 palettes = ['Reds', 'Greens', 'Blues', 'Oranges', 'Purples']
 
@@ -66,7 +65,7 @@ def plot_s2id(s2ids, color='#00ff00', alpha=0.5, auto_render=True, m=None):
     :returns: either image or staticmap object
     """
     if m is None:
-        m = StaticMap(800, 600, 5, 5, url_template='http://a.tile.stamen.com/toner/{z}/{x}/{y}.png')
+        m = MonochroMap()
 
     if (type(color) is not str):
         if (len(color) != len(s2ids)):
@@ -87,7 +86,7 @@ def plot_s2id(s2ids, color='#00ff00', alpha=0.5, auto_render=True, m=None):
             full_color = f'{color[i]}{math.ceil(alpha*255):02x}'
 
         region = Polygon(points, full_color, 'black', 20)
-        m.add_polygon(region)
+        m.add_feature(region)
 
     if auto_render:
         return m.render()
