@@ -112,6 +112,18 @@ pyparsing = ">=2.2.1"
 python-dateutil = ">=2.7"
 
 [[package]]
+name = "monochromap"
+version = "0.2.0"
+description = "A highly opinionated way to paint and plot black and white map"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+Pillow = "*"
+requests = "*"
+
+[[package]]
 name = "more-itertools"
 version = "8.8.0"
 description = "More routines for operating on iterables, beyond itertools"
@@ -356,7 +368,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7"
-content-hash = "cb7658072ee167adafa3c93d901c2e3b1fe98019f0cd92746deddcbda6613eec"
+content-hash = "3fc38fc3beded1e629756f0b34d55fa9ff23855ccf99d2d7340f2daaa2a2f912"
 
 [metadata.files]
 atomicwrites = [
@@ -448,6 +460,10 @@ matplotlib = [
     {file = "matplotlib-3.4.2-cp39-cp39-win32.whl", hash = "sha256:b1d5a2cedf5de05567c441b3a8c2651fbde56df08b82640e7f06c8cd91e201f6"},
     {file = "matplotlib-3.4.2-cp39-cp39-win_amd64.whl", hash = "sha256:df815378a754a7edd4559f8c51fc7064f779a74013644a7f5ac7a0c31f875866"},
     {file = "matplotlib-3.4.2.tar.gz", hash = "sha256:d8d994cefdff9aaba45166eb3de4f5211adb4accac85cbf97137e98f26ea0219"},
+]
+monochromap = [
+    {file = "monochromap-0.2.0-py3-none-any.whl", hash = "sha256:4911ba4e78ce6fa78c790c5680fd5a9ea5e60d7d0620e8e206d41109ab22efef"},
+    {file = "monochromap-0.2.0.tar.gz", hash = "sha256:9fb4313d567601dcc26490b956e0f1b4d96fc60c995203fbebf71a4361ec3916"},
 ]
 more-itertools = [
     {file = "more-itertools-8.8.0.tar.gz", hash = "sha256:83f0308e05477c68f56ea3a888172c78ed5d5b3c282addb67508e7ba6c8f813a"},
