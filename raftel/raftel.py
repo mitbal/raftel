@@ -129,7 +129,19 @@ def area_plot(data=None, s2id_col='s2id', hue='', color='', alpha=1, col=''):
         return fig
 
     if hue == '':
-        return plot_s2id(data[s2id_col], alpha=alpha)
+        if color == '':
+            return plot_s2id(data[s2id_col], alpha=alpha)
+        else:
+            vals = data[color]
+            min_val = min(vals)
+            max_val = max(vals)
+
+            n_unique = (len(vals.unique())-1)
+            idx = ((np.array(vals) - min_val) / (max_val - min_val) * n_unique).astype(int)
+            colors = [f'#{x[0]:02x}{x[1]:02x}{x[2]:02x}' for x in 
+                [(np.array(sns.color_palette(palettes[0], n_unique+1)[j])*255).astype(int) for j in idx]
+            ]
+            return plot_s2id(data[s2id_col], alpha=alpha, color=colors)
 
     m = None
     cats = data[hue].unique()
