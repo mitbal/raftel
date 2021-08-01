@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "raftel"
-version = "0.3.2"
+version = "0.3.3"
 description = "package to plot s2id easily with only one line of code"
 authors = ["mitbal <mit.iqi@gmail.com>"]
 keywords = ["s2id", "map"]

@@ -1,6 +1,7 @@
 # package raftel contains the function to plot list of s2id easily
 
 import math
+from monochromap.monochromap import Point
 
 import s2sphere
 import numpy as np
@@ -92,6 +93,22 @@ def plot_s2id(s2ids, color='#00ff00', alpha=0.5, auto_render=True, m=None):
         return m.render()
     return m
 
+
+def plot_point(lats, lons, color='#5cac2d', m=None, auto_render=True):
+    """
+    Plot set of points indicated by their coordinates into the map
+    """
+    if m is None:
+        m = MonochroMap()
+
+    for lat, lon in zip(lats, lons):
+        point = Point((lon, lat), color, 5)
+        m.add_feature(point)
+
+    if auto_render:
+        return m.render()
+    return m
+    
 
 def area_plot(data=None, s2id_col='s2id', hue='', color='', alpha=1, col=''):
     """
