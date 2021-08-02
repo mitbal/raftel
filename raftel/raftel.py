@@ -132,16 +132,11 @@ def area_plot(data=None, s2id_col='s2id', hue='', color='', alpha=1, col=''):
         if color == '':
             return plot_s2id(data[s2id_col], alpha=alpha)
         else:
-            vals = data[color]
-            min_val = min(vals)
-            max_val = max(vals)
 
-            n_unique = (len(vals.unique())-1)
-            idx = ((np.array(vals) - min_val) / (max_val - min_val) * n_unique).astype(int)
-            colors = [f'#{x[0]:02x}{x[1]:02x}{x[2]:02x}' for x in 
-                [(np.array(sns.color_palette(palettes[0], n_unique+1)[j])*255).astype(int) for j in idx]
-            ]
-            return plot_s2id(data[s2id_col], alpha=alpha, color=colors)
+            colors = _create_color_scheme(data[color], palettes[0])
+            m = plot_s2id(data[s2id_col], alpha=alpha, color=colors)
+
+            return m
 
     m = None
     cats = data[hue].unique()
@@ -149,23 +144,27 @@ def area_plot(data=None, s2id_col='s2id', hue='', color='', alpha=1, col=''):
         
         temp = data[data[hue] == cat]
 
-        sns.color_palette(palettes[i])
-
         if color == '':
             r, g, b = (np.array(sns.color_palette(palettes[i])[-1])*255).astype(int)
             c = f'#{r:02x}{g:02x}{b:02x}'
             m = plot_s2id(temp[s2id_col], color=c, m=m, auto_render=False, alpha=alpha)
         else:
 
-            vals = temp[color]
-            min_val = min(vals)
-            max_val = max(vals)
-
-            n_unique = (len(vals.unique())-1)
-            idx = ((np.array(vals) - min_val) / (max_val - min_val) * n_unique).astype(int)
-            colors = [f'#{x[0]:02x}{x[1]:02x}{x[2]:02x}' for x in 
-                [(np.array(sns.color_palette(palettes[i], n_unique+1)[j])*255).astype(int) for j in idx]
-            ]
+            colors = _create_color_scheme(temp[color], palettes[i])            
             m = plot_s2id(temp[s2id_col], color=colors, m=m, auto_render=False, alpha=alpha)
 
     return m.render()
+
+
+def _create_color_scheme(vals, palette):
+
+    min_val = min(vals)
+    max_val = max(vals)
+
+    n_unique = (len(vals.unique())-1)
+    idx = ((np.array(vals) - min_val) / (max_val - min_val) * n_unique).astype(int)
+    colors = [f'#{x[0]:02x}{x[1]:02x}{x[2]:02x}' for x in 
+        [(np.array(sns.color_palette(palette, n_unique+1)[j])*255).astype(int) for j in idx]
+    ]
+
+    return colors
