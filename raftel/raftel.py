@@ -21,7 +21,12 @@ def _rad_to_degree(x):
 
 def get_s2id(lat, lon, level):
     """
-    Given coordinates and the level, return the s2id that contains the coordinate
+    Given coordinates and the level, return the s2id at that particular level that contains the coordinate
+
+    :param lat: the latitude part of the coordinates, from -180 to +180
+    :param lon: the longitude part of the coordinates, from -180 to +180
+    :param level: the level of s2id, int from 0 to 31
+    :returns integer 64 bit with the value of the s2id
     """
 
     pos = s2sphere.LatLng.from_degrees(lat, lon)
@@ -34,6 +39,13 @@ def get_region(lat, lon, radius, level):
     """
     Get a list of s2ids within the radius from specific lat and long at specified level
     Thanks to Gaurav's answer posted here: https://stackoverflow.com/questions/44649831/using-python-s2-s2sphere-library-find-all-s2-cells-of-a-particular-level-with
+    
+    :param lat: the latitude part of the coordinates, from -180 to +180
+    :param lon: the longitude part of the coordinates, from -180 to +180
+    :param radius: the maximum distance from the coordinates that still contains the s2id, in meter
+    :param level: the level of s2id, int from 0 to 31
+    :returns integer 64 bit with the value of the s2id
+    
     """
 
     earthCircumferenceMeters = 1000 * 40075.017
