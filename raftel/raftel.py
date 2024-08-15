@@ -1,13 +1,13 @@
 # package raftel contains the function to plot list of s2id easily
 
 import math
-from monochromap.monochromap import Point
 
 import s2sphere
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from monochromap import MonochroMap, Polygon
+
+from monochromap import MonochroMap, Polygon, Point
 
 palettes = ['Reds', 'Greens', 'Blues', 'Oranges', 'Purples']
 
@@ -65,7 +65,7 @@ def get_region(lat, lon, radius, level):
     return s2ids
 
 
-def plot_s2id(s2ids, color='#00ff00', alpha=0.5, auto_render=True, m=None):
+def plot_s2id(s2ids, color='#00ff00', alpha=0.5, auto_render=True, m=None, api_key=''):
     """
     Given list of s2id, plot the area in the map.
 
@@ -78,7 +78,7 @@ def plot_s2id(s2ids, color='#00ff00', alpha=0.5, auto_render=True, m=None):
     :returns: either image or staticmap object
     """
     if m is None:
-        m = MonochroMap()
+        m = MonochroMap(api_key=api_key)
 
     if (type(color) is not str):
         if (len(color) != len(s2ids)):
@@ -106,12 +106,12 @@ def plot_s2id(s2ids, color='#00ff00', alpha=0.5, auto_render=True, m=None):
     return m
 
 
-def plot_point(lats, lons, color='#5cac2d', m=None, auto_render=True):
+def plot_point(lats, lons, color='#5cac2d', m=None, auto_render=True, api_key=''):
     """
     Plot set of points indicated by their coordinates into the map
     """
     if m is None:
-        m = MonochroMap()
+        m = MonochroMap(api_key=api_key)
 
     for lat, lon in zip(lats, lons):
         point = Point((lon, lat), color, 5)
@@ -122,7 +122,7 @@ def plot_point(lats, lons, color='#5cac2d', m=None, auto_render=True):
     return m
     
 
-def area_plot(data=None, s2id_col='s2id', hue='', color='', alpha=1, col=''):
+def area_plot(data=None, s2id_col='s2id', hue='', color='', alpha=1, col='', api_key=''):
     """
     Plot s2id inside a dataframe with seaborn like interface
     """
@@ -135,18 +135,18 @@ def area_plot(data=None, s2id_col='s2id', hue='', color='', alpha=1, col=''):
         for c, ax in zip(cols, axes.reshape(-1)):
 
             print('plot ', c)
-            img = area_plot(data[data[col] == c], s2id_col, hue, color, alpha, col='')
+            img = area_plot(data[data[col] == c], s2id_col, hue, color, alpha, col='', api_key=api_key)
             ax.imshow(img)
         
         return fig
 
     if hue == '':
         if color == '':
-            return plot_s2id(data[s2id_col], alpha=alpha)
+            return plot_s2id(data[s2id_col], alpha=alpha, api_key=api_key)
+        
         else:
-
             colors = _create_color_scheme(data[color], palettes[0])
-            m = plot_s2id(data[s2id_col], alpha=alpha, color=colors)
+            m = plot_s2id(data[s2id_col], alpha=alpha, color=colors, api_key=api_key)
 
             return m
 
@@ -159,11 +159,11 @@ def area_plot(data=None, s2id_col='s2id', hue='', color='', alpha=1, col=''):
         if color == '':
             r, g, b = (np.array(sns.color_palette(palettes[i])[-1])*255).astype(int)
             c = f'#{r:02x}{g:02x}{b:02x}'
-            m = plot_s2id(temp[s2id_col], color=c, m=m, auto_render=False, alpha=alpha)
+            m = plot_s2id(temp[s2id_col], color=c, m=m, auto_render=False, alpha=alpha, api_key=api_key)
+        
         else:
-
             colors = _create_color_scheme(temp[color], palettes[i])            
-            m = plot_s2id(temp[s2id_col], color=colors, m=m, auto_render=False, alpha=alpha)
+            m = plot_s2id(temp[s2id_col], color=colors, m=m, auto_render=False, alpha=alpha, api_key=api_key)
 
     return m.render()
 
