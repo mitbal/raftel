@@ -1,14 +1,14 @@
 import math
 
-from raftel import __version__
+import unittest
 from raftel.raftel import _rad_to_degree
 
+class TestRaftel(unittest.TestCase):
 
-def test_version():
-    assert __version__ == '0.2.0'
+    def test_rad_conversion(self):
+        self.assertEqual(_rad_to_degree(0), 0)
+        self.assertEqual(_rad_to_degree(math.pi), 180)
+        self.assertEqual(_rad_to_degree(2*math.pi), 360)
 
-
-def test_rad_conversion():
-    assert _rad_to_degree(0) == 0
-    assert _rad_to_degree(math.pi) == 180
-    assert _rad_to_degree(2*math.pi) == 360
+if __name__ == '__main__':
+    unittest.main(verbosity=2)
